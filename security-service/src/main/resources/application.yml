@@ -1,0 +1,30 @@
+zuul:
+  prefix: 
+  routes:
+    module-service:
+      path: /module/**
+      service-id: module-service
+      
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka
+    
+server:
+  port: 8083
+  
+spring:
+  application:
+    name: security-service
+
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000   
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
