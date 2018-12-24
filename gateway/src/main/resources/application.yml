@@ -1,6 +1,5 @@
 zuul:
   ignoredPatterns: /login
-  prefix: 
   routes:
     module-service:
       path: /**

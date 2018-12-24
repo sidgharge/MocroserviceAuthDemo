@@ -16,7 +16,7 @@ public class ModuleController {
 
 	@GetMapping("/getmodule")
 	public String getModule(@RequestHeader("username") String username) throws InterruptedException {
-		Thread.sleep(3000);
+//		System.out.println(token);
 		Module module = moduleRepository.findByUser(username);
 		
 		return module.getName();

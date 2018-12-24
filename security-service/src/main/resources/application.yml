@@ -1,5 +1,4 @@
 zuul:
-  prefix: 
   routes:
     module-service:
       path: /module/**
@@ -28,3 +27,8 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 60000
+
+header:
+   name: token
+   description: Authorization token
+
