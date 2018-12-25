@@ -4,6 +4,9 @@ zuul:
     module-service:
       path: /module/**
       service-id: module-service
+    user-service:
+      path: /users/**
+      service-id: user-service
       
 eureka:
   client:
