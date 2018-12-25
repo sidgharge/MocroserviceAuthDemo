@@ -1,4 +1,4 @@
-package com.microservices.securityservice;
+package com.microservices.securityservice.controllers;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,7 +17,8 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.microservices.securityservice.SwaggerConfig.AuthParameter;
+import com.microservices.securityservice.config.SwaggerConfig;
+import com.microservices.securityservice.config.SwaggerConfig.AuthParameter;
 
 @RestController
 public class LoginAuthController {

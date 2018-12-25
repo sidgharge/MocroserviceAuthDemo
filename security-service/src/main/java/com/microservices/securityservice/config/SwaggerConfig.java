@@ -1,4 +1,4 @@
-package com.microservices.securityservice;
+package com.microservices.securityservice.config;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

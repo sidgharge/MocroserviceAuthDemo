@@ -1,4 +1,4 @@
-package com.microservices.securityservice;
+package com.microservices.securityservice.security;
 
 import javax.servlet.http.HttpServletRequest;
 

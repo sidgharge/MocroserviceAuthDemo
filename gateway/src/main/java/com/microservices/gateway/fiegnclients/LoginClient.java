@@ -1,4 +1,4 @@
-package com.microservices.gateway;
+package com.microservices.gateway.fiegnclients;
 
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.FeignClient;

@@ -1,4 +1,4 @@
-package com.microservices.gateway;
+package com.microservices.gateway.swagger;
 
 import java.util.List;
 import java.util.stream.Collectors;

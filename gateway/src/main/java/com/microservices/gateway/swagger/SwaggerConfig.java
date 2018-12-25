@@ -1,4 +1,4 @@
-package com.microservices.gateway;
+package com.microservices.gateway.swagger;
 
 
 import org.springframework.context.annotation.Configuration;

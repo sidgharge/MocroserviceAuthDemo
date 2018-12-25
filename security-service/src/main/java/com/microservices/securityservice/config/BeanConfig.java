@@ -1,4 +1,4 @@
-package com.microservices.securityservice;
+package com.microservices.securityservice.config;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
