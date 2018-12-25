@@ -24,6 +24,9 @@ public class SecurityFilter extends ZuulFilter {
 			String token = request.getHeader("token");
 			String username = token.substring(0, token.indexOf(":"));
 			context.addZuulRequestHeader("username", username);
+		} else {
+			context.setResponseStatusCode(401);
+			context.setSendZuulResponse(false);
 		}
 		return null;
 	}

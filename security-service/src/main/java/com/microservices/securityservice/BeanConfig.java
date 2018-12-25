@@ -6,10 +6,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableSwagger2
 public class BeanConfig {
 
 	@Bean
@@ -17,16 +15,16 @@ public class BeanConfig {
 		return new RestTemplate();
 	}
 
-	@Bean
-	public WebMvcConfigurer webMvcConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addResourceHandlers(ResourceHandlerRegistry registry) {
-				registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-
-				registry.addResourceHandler("/webjars/**")
-						.addResourceLocations("classpath:/META-INF/resources/webjars/");
-			}
-		};
-	}
+//	@Bean
+//	public WebMvcConfigurer webMvcConfigurer() {
+//		return new WebMvcConfigurer() {
+//			@Override
+//			public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//				registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+//
+//				registry.addResourceHandler("/webjars/**")
+//						.addResourceLocations("classpath:/META-INF/resources/webjars/");
+//			}
+//		};
+//	}
 }

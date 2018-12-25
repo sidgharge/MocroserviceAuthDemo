@@ -1,5 +1,7 @@
 package com.microservices.gateway;
 
+import java.util.Map;
+
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +17,6 @@ public interface LoginClient {
 	@GetMapping("/login")
 	String login(@RequestParam("user") String user, @RequestParam("password") String password);
 	
-	// TODO
-	@GetMapping()
-	ObjectNode getDocs();
+	@GetMapping("/api-docs/{serviceId}")
+	ObjectNode getDocs(@PathVariable String serviceId);
 }

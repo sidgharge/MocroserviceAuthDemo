@@ -1,4 +1,5 @@
 zuul:
+  ignored-patterns: /api-docs/
   routes:
     module-service:
       path: /module/**
@@ -31,4 +32,15 @@ hystrix:
 header:
    name: token
    description: Authorization token
+   
+swagger:
+  gateway:
+    service-id: gateway-service
+    prefix: /api
+  paramters:
+    token:
+      description: This is a security token
+      in: header
+      required: false
+      type: string
 
