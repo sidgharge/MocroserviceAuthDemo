@@ -1,13 +1,11 @@
 package com.microservices.gateway;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -19,9 +17,6 @@ import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 @Primary
 @EnableAutoConfiguration
 public class DocumentationController implements SwaggerResourcesProvider {
-
-	@Autowired
-	private LoginClient loginClient;
 
 	@Autowired
 	private DiscoveryClient discoveryClient;
