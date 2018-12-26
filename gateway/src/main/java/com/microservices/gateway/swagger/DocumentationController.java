@@ -1,5 +1,6 @@
 package com.microservices.gateway.swagger;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,10 +30,17 @@ public class DocumentationController implements SwaggerResourcesProvider {
 
 	@Override
 	public List<SwaggerResource> get() {
-		return discoveryClient.getServices().stream().filter(serviceId -> !applicationName.equalsIgnoreCase(serviceId)
-				&& !securityAppName.equalsIgnoreCase(serviceId)).map(serviceId -> {
-					return swaggerResource(serviceId, "/docs/" + serviceId, "2.0");
-				}).collect(Collectors.toList());
+		List<SwaggerResource> resources = new ArrayList<>();
+		
+		discoveryClient.getServices().stream()
+				.filter(serviceId -> !applicationName.equalsIgnoreCase(serviceId)
+				&& !securityAppName.equalsIgnoreCase(serviceId))
+				.map(serviceId -> swaggerResource(serviceId, "/docs/" + serviceId, "2.0"))
+				.forEach(resources::add);
+		
+		resources.add(swaggerResource("login", "/v2/api-docs", "2.0"));
+		
+		return resources;
 	}
 
 	private SwaggerResource swaggerResource(String name, String location, String version) {

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microservices.gateway.fiegnclients.LoginClient;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 @RestController
 public class LoginController {
 
@@ -26,6 +28,7 @@ public class LoginController {
 		}
 	}
 
+	@ApiIgnore
 	@GetMapping("/docs/{serviceId}")
 	public ObjectNode getDocs(@PathVariable String serviceId) {
 		return loginClient.getDocs(serviceId);
