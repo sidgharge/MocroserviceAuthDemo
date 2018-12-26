@@ -1,5 +1,7 @@
 package com.microservices.securityservice.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -55,8 +57,13 @@ public class LoginAuthController {
 			String prefix = getPrefix(routes, serviceId);
 
 			ObjectNode pathsNode = (ObjectNode) resNode.path("paths");
-
-			pathsNode.fields().forEachRemaining(entry -> addPrefixToApi(entry, prefix, pathsNode));
+			
+			List<String> fields = new ArrayList<>();
+			pathsNode.fieldNames().forEachRemaining(fields::add);
+			
+			fields.forEach(field -> {
+				addPrefixToApi(field, prefix, pathsNode);
+			});
 		}
 
 		swaggerConfig.getParamters().forEach((paramName, authParam) -> {
@@ -83,11 +90,10 @@ public class LoginAuthController {
 		return prefix;
 	}
 
-	private void addPrefixToApi(Entry<String, JsonNode> entry, String prefix, ObjectNode pathsNode) {
-		String key = prefix + entry.getKey();
-		JsonNode value = entry.getValue();
-		pathsNode.remove(entry.getKey());
-		pathsNode.set(key, value);
+	private void addPrefixToApi(String field, String prefix, ObjectNode pathsNode) {
+		JsonNode value= pathsNode.get(field);
+		pathsNode.remove(field);
+		pathsNode.set(prefix + field, value);
 	}
 
 	
