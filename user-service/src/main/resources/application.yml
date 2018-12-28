@@ -1,12 +1,13 @@
 eureka:
   client:
+    fetch-registry: true
     service-url:
       defaultZone: http://localhost:8081/eureka
   instance:
     hostname: localhost
     
 server:
-  port: 8084
+  port: 8085
   
 spring:
   application:
