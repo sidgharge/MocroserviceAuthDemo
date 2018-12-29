@@ -16,6 +16,11 @@ public class UserController {
 		return "Hello " + name;
 	}
 	
+	@PostMapping("/{name}")
+	public String greetPost(@PathVariable String name) {
+		return "Hello " + name;
+	}
+	
 	@PostMapping("")
 	public User user(@RequestBody User user) {
 		System.out.println(user);

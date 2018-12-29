@@ -1,7 +1,9 @@
 package com.microservices.securityservice.config;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +14,7 @@ public class SwaggerConfig {
 
 	private Gateway gateway;
 
-	private Map<String, AuthParameter> paramters = new LinkedHashMap<>();
+	private AuthParameters paramters = new AuthParameters();
 
 	public static class Gateway {
 
@@ -37,55 +39,78 @@ public class SwaggerConfig {
 		}
 	}
 
-	public static class AuthParameter {
+	public static class AuthParameters {
 
-		private String description;
+		private Map<String, Parameter> includes = new LinkedHashMap<>();
 
-		private String in;
+		private Set<String> excludes = new LinkedHashSet<>();
 
-		private boolean required;
+		public static class Parameter {
 
-		private String type;
+			private String description;
 
-		public String getDescription() {
-			return description;
+			private String in;
+
+			private boolean required;
+
+			private String type;
+
+			public String getDescription() {
+				return description;
+			}
+
+			public void setDescription(String description) {
+				this.description = description;
+			}
+
+			public String getIn() {
+				return in;
+			}
+
+			public void setIn(String in) {
+				this.in = in;
+			}
+
+			public boolean isRequired() {
+				return required;
+			}
+
+			public void setRequired(boolean required) {
+				this.required = required;
+			}
+
+			public String getType() {
+				return type;
+			}
+
+			public void setType(String type) {
+				this.type = type;
+			}
 		}
 
-		public void setDescription(String description) {
-			this.description = description;
+		public Map<String, Parameter> getIncludes() {
+			return includes;
 		}
 
-		public String getIn() {
-			return in;
+		public void setIncludes(Map<String, Parameter> includes) {
+			this.includes = includes;
 		}
 
-		public void setIn(String in) {
-			this.in = in;
+		public Set<String> getExcludes() {
+			return excludes;
 		}
 
-		public boolean isRequired() {
-			return required;
-		}
-
-		public void setRequired(boolean required) {
-			this.required = required;
-		}
-
-		public String getType() {
-			return type;
-		}
-
-		public void setType(String type) {
-			this.type = type;
+		public void setExcludes(Set<String> excludes) {
+			this.excludes = excludes;
 		}
 
 	}
 
-	public Map<String, AuthParameter> getParamters() {
+	public AuthParameters getParamters() {
 		return paramters;
 	}
 
-	public void setParamters(Map<String, AuthParameter> paramters) {
+	public void setParamters(AuthParameters paramters) {
 		this.paramters = paramters;
 	}
 

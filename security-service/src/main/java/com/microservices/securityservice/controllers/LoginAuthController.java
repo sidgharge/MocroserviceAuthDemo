@@ -1,6 +1,7 @@
 package com.microservices.securityservice.controllers;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -20,7 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microservices.securityservice.config.SwaggerConfig;
-import com.microservices.securityservice.config.SwaggerConfig.AuthParameter;
+import com.microservices.securityservice.config.SwaggerConfig.AuthParameters.Parameter;
 
 @RestController
 public class LoginAuthController {
@@ -37,7 +38,6 @@ public class LoginAuthController {
 	@Autowired
 	private SwaggerConfig swaggerConfig;
 
-	
 	@GetMapping("/login")
 	public String login(@RequestParam("user") String user) {
 		return user + ":123";
@@ -53,29 +53,39 @@ public class LoginAuthController {
 
 		Map<String, ZuulRoute> routes = zuul.getRoutes();
 
+		ObjectNode pathsNode = (ObjectNode) resNode.path("paths");
+
 		if (routes.get(serviceId).isStripPrefix()) {
 			String prefix = getPrefix(routes, serviceId);
 
-			ObjectNode pathsNode = (ObjectNode) resNode.path("paths");
-			
 			List<String> fields = new ArrayList<>();
 			pathsNode.fieldNames().forEachRemaining(fields::add);
-			
+
 			fields.forEach(field -> {
 				addPrefixToApi(field, prefix, pathsNode);
 			});
 		}
 
-		swaggerConfig.getParamters().forEach((paramName, authParam) -> {
-			ObjectNode pathsNode = (ObjectNode) resNode.path("paths");
+		swaggerConfig
+			.getParamters()
+			.getIncludes()
+			.forEach((paramName, authParam) -> pathsNode
+												.fields()
+												.forEachRemaining(entry -> addParameterToPath(entry, paramName, authParam)
+			));
 
-			pathsNode.fields().forEachRemaining(entry -> addParameterToApi(entry, paramName, authParam));
-		});
+		swaggerConfig
+			.getParamters()
+			.getExcludes()
+			.forEach(paramName -> pathsNode
+									.fields()
+									.forEachRemaining(entry -> removeParameterFromPath(entry, paramName)
+			));
 
 		return resNode;
 
 	}
-	
+
 	private String getPrefix(Map<String, ZuulRoute> routes, String serviceId) {
 		String prefix = routes.get(serviceId).getPath().replaceAll("\\**", "");
 
@@ -91,28 +101,47 @@ public class LoginAuthController {
 	}
 
 	private void addPrefixToApi(String field, String prefix, ObjectNode pathsNode) {
-		JsonNode value= pathsNode.get(field);
+		JsonNode value = pathsNode.get(field);
 		pathsNode.remove(field);
 		pathsNode.set(prefix + field, value);
 	}
 
-	
+	private void removeParameterFromPath(Entry<String, JsonNode> entry, String paramName) {
+		Iterator<JsonNode> apiMethod = entry.getValue().elements();
+		while (apiMethod.hasNext()) {
+			ArrayNode arrayNode = (ArrayNode) apiMethod.next().get("parameters");
 
-	private void addParameterToApi(Entry<String, JsonNode> entry, String paramName, AuthParameter authParameter) {
-		ArrayNode arrayNode = (ArrayNode) entry.getValue().elements().next().get("parameters");
-		ObjectNode newHeader = arrayNode.addObject();
-		newHeader.put("name", paramName);
-		newHeader.put("in", authParameter.getIn());
-		newHeader.put("description", authParameter.getDescription());
-		newHeader.put("required", authParameter.isRequired());
-		newHeader.put("type", authParameter.getType());
+			Iterator<JsonNode> apiParameters = arrayNode.iterator();
+			while (apiParameters.hasNext()) {
+				JsonNode apiParameter = apiParameters.next();
+				if (apiParameter.get("name").asText().equals(paramName)) {
+					apiParameters.remove();
+				}
+			}
+		}
+
+	}
+
+	private void addParameterToPath(Entry<String, JsonNode> entry, String paramName, Parameter authParameter) {
+		Iterator<JsonNode> apiMethod = entry.getValue().elements();
+
+		while (apiMethod.hasNext()) {
+			ArrayNode arrayNode = (ArrayNode) apiMethod.next().get("parameters");
+			ObjectNode newHeader = arrayNode.addObject();
+			newHeader.put("name", paramName);
+			newHeader.put("in", authParameter.getIn());
+			newHeader.put("description", authParameter.getDescription());
+			newHeader.put("required", authParameter.isRequired());
+			newHeader.put("type", authParameter.getType());
+		}
 	}
 
 	private String buildSwaggerUrl(String serviceId) {
 		ServiceInstance instance = discoveryClient.getInstances(serviceId).get(0);
 		String url = instance.isSecure() ? "https://" : "http://";
 		return url + serviceId + "/v2/api-docs";
-//		return discoveryClient.getInstances(serviceId).get(0).getScheme().getUri() + "/v2/api-docs";
+		// return discoveryClient.getInstances(serviceId).get(0).getScheme().getUri() +
+		// "/v2/api-docs";
 	}
 
 }
