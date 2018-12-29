@@ -37,11 +37,13 @@ swagger:
     service-id: gateway-service
     prefix: /api
   paramters:
-    excludes: username
+    excludes: 
+      username:
+          in: header
     includes:
       token:
         description: This is a security token
         in: header
-        required: false
+        required: true
         type: string
 

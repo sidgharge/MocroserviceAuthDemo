@@ -43,7 +43,7 @@ public class SwaggerConfig {
 
 		private Map<String, Parameter> includes = new LinkedHashMap<>();
 
-		private Set<String> excludes = new LinkedHashSet<>();
+		private Map<String, ExcludedParamter> excludes = new LinkedHashMap<>();
 
 		public static class Parameter {
 
@@ -88,6 +88,20 @@ public class SwaggerConfig {
 			}
 		}
 
+		public static class ExcludedParamter {
+
+			private String in;
+
+			public String getIn() {
+				return in;
+			}
+
+			public void setIn(String in) {
+				this.in = in;
+			}
+
+		}
+
 		public Map<String, Parameter> getIncludes() {
 			return includes;
 		}
@@ -96,11 +110,11 @@ public class SwaggerConfig {
 			this.includes = includes;
 		}
 
-		public Set<String> getExcludes() {
+		public Map<String, ExcludedParamter> getExcludes() {
 			return excludes;
 		}
 
-		public void setExcludes(Set<String> excludes) {
+		public void setExcludes(Map<String, ExcludedParamter> excludes) {
 			this.excludes = excludes;
 		}
 

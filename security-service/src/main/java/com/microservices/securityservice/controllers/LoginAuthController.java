@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microservices.securityservice.config.SwaggerConfig;
+import com.microservices.securityservice.config.SwaggerConfig.AuthParameters.ExcludedParamter;
 import com.microservices.securityservice.config.SwaggerConfig.AuthParameters.Parameter;
 
 @RestController
@@ -77,9 +78,9 @@ public class LoginAuthController {
 		swaggerConfig
 			.getParamters()
 			.getExcludes()
-			.forEach(paramName -> pathsNode
+			.forEach((paramName, exclParam)-> pathsNode
 									.fields()
-									.forEachRemaining(entry -> removeParameterFromPath(entry, paramName)
+									.forEachRemaining(entry -> removeParameterFromPath(entry, paramName, exclParam)
 			));
 
 		return resNode;
@@ -105,8 +106,8 @@ public class LoginAuthController {
 		pathsNode.remove(field);
 		pathsNode.set(prefix + field, value);
 	}
-
-	private void removeParameterFromPath(Entry<String, JsonNode> entry, String paramName) {
+	
+	private void removeParameterFromPath(Entry<String, JsonNode> entry, String paramName, ExcludedParamter exclParam) {
 		Iterator<JsonNode> apiMethod = entry.getValue().elements();
 		while (apiMethod.hasNext()) {
 			ArrayNode arrayNode = (ArrayNode) apiMethod.next().get("parameters");
@@ -114,7 +115,7 @@ public class LoginAuthController {
 			Iterator<JsonNode> apiParameters = arrayNode.iterator();
 			while (apiParameters.hasNext()) {
 				JsonNode apiParameter = apiParameters.next();
-				if (apiParameter.get("name").asText().equals(paramName)) {
+				if (apiParameter.get("name").asText().equals(paramName) && apiParameter.get("in").asText().equals(exclParam.getIn())) {
 					apiParameters.remove();
 				}
 			}
