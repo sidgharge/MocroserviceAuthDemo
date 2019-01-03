@@ -11,7 +11,7 @@ import com.microservices.securityservice.config.RibbonConfig;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableZuulProxy
-@RibbonClients(defaultConfiguration=RibbonConfig.class)
+//@RibbonClients(defaultConfiguration=RibbonConfig.class)
 public class SecurityServiceApplication {
 
 	public static void main(String[] args) {

@@ -1,5 +1,6 @@
 zuul:
   ignored-patterns: /api-docs/
+  retryable: true
   routes:
     module-service:
       path: /module/**
@@ -26,11 +27,10 @@ spring:
 
 user-service:
   ribbon:
-    ReadTimeout: 800
-    ConnectTimeout: 250
-    OkToRetryOnAllOperations: true
-    MaxAutoRetriesNextServer: 2
+    retryableStatusCodes: 500
     MaxAutoRetries: 0
+    ReadTimeout: 60000
+    ConnectTimeout: 60000
 
 hystrix:
   command:

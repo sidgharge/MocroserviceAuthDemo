@@ -19,11 +19,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 
 	@Bean
-    public Docket api() throws IOException {
-        return new Docket(DocumentationType.SWAGGER_2)
-          .select()
-          .apis(RequestHandlerSelectors.basePackage("com.microservices"))
-          .paths(PathSelectors.any())
-          .build().apiInfo(new ApiInfo("User Service Api Documentation", "Documentation automatically generated", "v1", null, new Contact("Sid", "abc.com", "sid@gmail.com"), null, null, Collections.EMPTY_LIST));
-}
+	public Docket api() throws IOException {
+		return new Docket(DocumentationType.SWAGGER_2).select()
+				.apis(RequestHandlerSelectors.basePackage("com.microservices")).paths(PathSelectors.any()).build()
+				.apiInfo(new ApiInfo("User Service Api Documentation", "Documentation automatically generated", "v1",
+						null, new Contact("Sid", "abc.com", "sid@gmail.com"), null, null, Collections.EMPTY_LIST));
+	}
 }
